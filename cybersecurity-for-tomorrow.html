@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cybersecurity For Tomorrow</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0D2B5E;--blue:#2563EB;--blue-light:#EFF6FF;--gray:#374151;--gray2:#6B7280;--gray3:#F3F4F6;--white:#fff;--accent:#F59E0B;--red:#DC2626}
+body{font-family:system-ui,-apple-system,sans-serif;font-size:18px;color:var(--gray);background:var(--white);line-height:1.6}
+.site{max-width:900px;margin:0 auto}
+
+/* NAV */
+nav{background:var(--navy);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100}
+.nav-brand{color:#fff;font-size:20px;font-weight:500;cursor:pointer;text-decoration:none}
+.nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.nav-links button{background:transparent;border:none;color:rgba(255,255,255,0.85);cursor:pointer;padding:6px 10px;border-radius:6px;font-size:15px;transition:background .15s}
+.nav-links button:hover,.nav-active{background:rgba(255,255,255,0.15)!important;color:#fff!important}
+.a11y-bar{display:flex;gap:6px}
+.a11y-btn{background:var(--accent);border:none;color:#7c3a00;font-weight:500;padding:6px 12px;border-radius:6px;cursor:pointer;font-size:14px}
+
+/* PAGES */
+.page{display:none;padding:0 16px 60px}
+.page.active{display:block}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#0D2B5E,#1A3F8F);color:#fff;padding:56px 24px;text-align:center;border-radius:0 0 16px 16px;margin:0 -16px 36px}
+.hero h1{font-size:clamp(26px,5vw,42px);font-weight:600;margin-bottom:14px;line-height:1.2}
+.hero p{font-size:clamp(16px,2.5vw,20px);opacity:.9;max-width:600px;margin:0 auto 28px}
+.hero-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn-primary{background:var(--accent);color:#7c3a00;border:none;padding:13px 28px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:opacity .15s}
+.btn-primary:hover{opacity:.9}
+.btn-outline{background:transparent;color:#fff;border:2px solid #fff;padding:13px 28px;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:background .15s}
+.btn-outline:hover{background:rgba(255,255,255,0.1)}
+
+/* ANNOUNCE */
+.announce{background:#FEF3C7;border:1.5px solid #F59E0B;border-radius:8px;padding:14px 18px;margin-bottom:28px;font-size:16px;color:#92400E;display:flex;gap:10px;align-items:flex-start}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:36px}
+.stat-card{background:var(--blue-light);border:1px solid #BFDBFE;border-radius:12px;padding:22px;text-align:center}
+.stat-num{font-size:34px;font-weight:600;color:var(--navy);line-height:1.1}
+.stat-label{font-size:14px;color:var(--gray2);margin-top:4px}
+
+/* SECTION */
+.section-title{font-size:22px;font-weight:600;color:var(--navy);margin-bottom:18px;padding-bottom:10px;border-bottom:2px solid var(--blue-light)}
+
+/* ABOUT */
+.about-section{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:36px}
+@media(max-width:600px){.about-section{grid-template-columns:1fr}}
+.about-img{background:var(--blue-light);border-radius:12px;min-height:220px;display:flex;align-items:center;justify-content:center;font-size:56px}
+.about-text h2{font-size:22px;font-weight:600;color:var(--navy);margin-bottom:12px}
+
+/* VIDEO */
+.search-bar input{width:100%;padding:11px 16px;border:1.5px solid #D1D5DB;border-radius:8px;font-size:16px;margin-bottom:16px}
+.search-bar input:focus{outline:none;border-color:var(--blue)}
+.filter-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.pill{background:var(--gray3);border:1px solid #D1D5DB;border-radius:20px;padding:7px 16px;cursor:pointer;font-size:14px;color:var(--gray);transition:all .15s}
+.pill.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-bottom:36px}
+.video-card{background:var(--white);border:1px solid #E5E7EB;border-radius:12px;overflow:hidden;transition:box-shadow .15s}
+.video-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.1)}
+.video-thumb{background:var(--navy);height:140px;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer}
+.play-icon{width:52px;height:52px;background:rgba(255,255,255,.92);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px}
+.cat-badge{position:absolute;top:10px;left:10px;background:var(--accent);color:#7c3a00;font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px}
+.video-info{padding:14px}
+.video-info h3{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px}
+.video-info .vdate{font-size:12px;color:var(--gray2)}
+.video-info p{font-size:13px;color:var(--gray2);margin-top:5px}
+
+/* GALLERY */
+.photo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-bottom:32px}
+.photo-tile{border-radius:12px;overflow:hidden;background:var(--gray3);aspect-ratio:4/3;position:relative;cursor:pointer}
+.photo-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .2s}
+.photo-tile:hover img{transform:scale(1.03)}
+.photo-placeholder{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--gray2);font-size:13px;gap:8px;padding:16px;text-align:center}
+.photo-placeholder span:first-child{font-size:36px}
+.photo-caption{position:absolute;bottom:0;left:0;right:0;background:rgba(13,43,94,0.82);color:#fff;font-size:12px;padding:7px 10px;line-height:1.3}
+
+/* LIGHTBOX */
+.photo-lightbox{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.9);z-index:999;align-items:center;justify-content:center;flex-direction:column;gap:14px}
+.photo-lightbox.open{display:flex}
+.photo-lightbox img{max-width:90vw;max-height:75vh;border-radius:10px;object-fit:contain}
+.photo-lightbox .lb-caption{color:#fff;font-size:16px;text-align:center;max-width:600px;padding:0 20px}
+.photo-lightbox .lb-close{position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer;line-height:1}
+
+/* TEAM / CHAPTERS */
+.chapter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:28px}
+.chapter-card{background:var(--white);border:2px solid #E5E7EB;border-radius:14px;padding:22px 12px;text-align:center;cursor:pointer;transition:border-color .15s,background .15s}
+.chapter-card:hover{border-color:#93C5FD}
+.chapter-card.active{border-color:var(--navy);background:var(--blue-light)}
+.chapter-icon{font-size:42px;margin-bottom:10px;line-height:1}
+.chapter-name{font-size:14px;font-weight:600;color:var(--navy)}
+.chapter-count{font-size:12px;color:var(--gray2);margin-top:3px}
+.officers-panel{background:var(--gray3);border-radius:14px;padding:22px;margin-bottom:36px;display:none}
+.officers-panel.visible{display:block}
+.officers-header{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.officers-header h3{font-size:18px;font-weight:600;color:var(--navy)}
+.officer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px}
+.officer-card{background:var(--white);border:1px solid #E5E7EB;border-radius:12px;padding:18px;text-align:center}
+.officer-avatar{width:60px;height:60px;border-radius:50%;background:var(--blue-light);display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:600;color:var(--navy);margin:0 auto 12px}
+.officer-card h4{font-size:14px;font-weight:600;color:var(--navy)}
+.officer-card .role{font-size:12px;color:var(--blue);margin-bottom:5px}
+.officer-card .bio{font-size:12px;color:var(--gray2)}
+
+/* RESOURCES */
+.resource-list{display:grid;gap:14px;margin-bottom:36px}
+.resource-item{display:flex;align-items:center;gap:14px;background:var(--gray3);border-radius:10px;padding:16px;cursor:pointer;transition:background .15s}
+.resource-item:hover{background:#E5E7EB}
+.res-icon{width:44px;height:44px;background:var(--red);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0}
+.resource-item h4{font-size:15px;font-weight:600;color:var(--navy)}
+.resource-item p{font-size:13px;color:var(--gray2)}
+
+/* CONTACT / EMAIL BOX */
+.contact-box{background:var(--blue-light);border:1.5px solid #BFDBFE;border-radius:14px;padding:32px;margin-bottom:36px;text-align:center}
+.contact-box h3{font-size:20px;font-weight:600;color:var(--navy);margin-bottom:10px}
+.contact-box p{color:var(--gray2);margin-bottom:18px;max-width:500px;margin-left:auto;margin-right:auto}
+.contact-box a.email-btn{display:inline-block;background:var(--navy);color:#fff;padding:13px 30px;border-radius:8px;font-size:17px;font-weight:600;text-decoration:none;transition:opacity .15s}
+.contact-box a.email-btn:hover{opacity:.88}
+
+/* DONATE */
+.donate-hero{background:var(--blue-light);border-radius:14px;padding:36px;text-align:center;margin-bottom:28px}
+.donate-hero h2{font-size:26px;font-weight:600;color:var(--navy);margin-bottom:10px}
+.donate-amounts{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin:22px 0}
+.donate-amt{background:var(--white);border:2px solid #D1D5DB;border-radius:10px;padding:12px 22px;font-size:18px;font-weight:600;cursor:pointer;color:var(--navy);transition:all .15s}
+.donate-amt.sel{border-color:var(--navy);background:var(--navy);color:#fff}
+
+/* ADMIN */
+.admin-login{max-width:420px;margin:60px auto;background:var(--white);border:1px solid #E5E7EB;border-radius:14px;padding:36px;box-shadow:0 4px 20px rgba(0,0,0,0.07)}
+.admin-login h2{font-size:24px;font-weight:600;color:var(--navy);margin-bottom:22px;text-align:center}
+.admin-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:26px;border-bottom:1px solid #E5E7EB}
+.admin-tab{background:transparent;border:none;border-bottom:2.5px solid transparent;padding:10px 13px;cursor:pointer;font-size:14px;color:var(--gray2);margin-bottom:-1px;transition:color .15s}
+.admin-tab.active{color:var(--navy);border-bottom-color:var(--navy);font-weight:600}
+.admin-panel{display:none}
+.admin-panel.active{display:block}
+.admin-form{background:var(--gray3);border-radius:12px;padding:22px;margin-bottom:22px}
+.admin-form h3{font-size:16px;font-weight:600;color:var(--navy);margin-bottom:16px}
+.admin-list{display:grid;gap:10px;margin-top:16px}
+.admin-item{background:var(--white);border:1px solid #E5E7EB;border-radius:10px;padding:14px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.admin-item-info{flex:1;min-width:0}
+.admin-item-info h4{font-size:14px;font-weight:600;color:var(--navy)}
+.admin-item-info p{font-size:12px;color:var(--gray2)}
+.btn-del{background:none;border:1px solid #FCA5A5;color:var(--red);padding:6px 12px;border-radius:6px;cursor:pointer;font-size:13px;white-space:nowrap}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:500px){.row2{grid-template-columns:1fr}}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;font-size:14px;font-weight:600;color:var(--gray);margin-bottom:7px}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:11px 14px;border:1.5px solid #D1D5DB;border-radius:8px;font-size:15px;background:var(--white);transition:border-color .15s}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--blue)}
+.form-group textarea{height:90px;resize:vertical}
+.btn-submit{background:var(--navy);color:#fff;border:none;padding:13px 26px;border-radius:8px;font-size:16px;cursor:pointer;font-weight:600;transition:opacity .15s}
+.btn-submit:hover{opacity:.88}
+.success-msg{background:#D1FAE5;color:#065F46;padding:11px 16px;border-radius:8px;margin-top:12px;font-size:14px;display:none}
+.icon-picker{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.icon-opt{font-size:26px;cursor:pointer;padding:7px;border:2px solid transparent;border-radius:9px;transition:border-color .15s}
+.icon-opt:hover{border-color:#93C5FD}
+.icon-opt.sel{border-color:var(--navy);background:var(--blue-light)}
+.upload-area{border:2px dashed #D1D5DB;border-radius:10px;padding:28px;text-align:center;cursor:pointer;color:var(--gray2);font-size:14px;transition:all .15s}
+.upload-area:hover{border-color:var(--blue);background:var(--blue-light)}
+.photo-admin-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-top:14px}
+.photo-admin-tile{border-radius:10px;overflow:hidden;background:var(--gray3);aspect-ratio:4/3;position:relative}
+.photo-admin-tile img{width:100%;height:100%;object-fit:cover}
+.photo-admin-tile .del-photo{position:absolute;top:5px;right:5px;background:rgba(220,38,38,0.9);color:#fff;border:none;border-radius:5px;font-size:12px;padding:3px 7px;cursor:pointer}
+.photo-admin-tile .cap-label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,0.65);padding:5px 8px}
+.photo-admin-tile .cap-label input{width:100%;background:transparent;border:none;color:#fff;font-size:11px;outline:none}
+.photo-admin-placeholder{border-radius:10px;background:var(--gray3);aspect-ratio:4/3;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:12px;color:var(--gray2);padding:10px;text-align:center;gap:4px;position:relative}
+.photo-admin-placeholder button{margin-top:6px;font-size:11px;background:none;border:1px solid #FCA5A5;color:var(--red);border-radius:4px;padding:2px 8px;cursor:pointer}
+
+/* FOOTER */
+footer{background:var(--navy);color:rgba(255,255,255,0.7);text-align:center;padding:24px 16px;font-size:14px;margin-top:20px}
+footer strong{color:#fff}
+
+/* RESPONSIVE */
+@media(max-width:640px){
+  nav{padding:10px 14px}
+  .nav-brand{font-size:17px}
+  .hero{padding:36px 16px}
+  .page{padding:0 12px 50px}
+}
+</style>
+</head>
+<body>
+<div class="site">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand" onclick="showPage('home')">🛡️ Cybersecurity For Tomorrow</div>
+  <div class="nav-links">
+    <button onclick="showPage('home')" class="nav-active" id="nb-home">Home</button>
+    <button onclick="showPage('curriculum')" id="nb-curriculum">Workshops</button>
+    <button onclick="showPage('gallery')" id="nb-gallery">Gallery</button>
+    <button onclick="showPage('team')" id="nb-team">Team</button>
+    <button onclick="showPage('resources')" id="nb-resources">Resources</button>
+    <button onclick="showPage('donate')" id="nb-donate">Donate</button>
+    <button onclick="showPage('admin')" id="nb-admin">Admin</button>
+  </div>
+  <div class="a11y-bar">
+    <button class="a11y-btn" onclick="toggleFontSize()" title="Increase font size">A+</button>
+    <button class="a11y-btn" onclick="toggleContrast()" title="High contrast mode">◑</button>
+  </div>
+</nav>
+
+<!-- ===== HOME ===== -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1 id="heroHeadline">Protecting Seniors in the Digital World</h1>
+    <p id="heroSub">Free cybersecurity workshops helping seniors stay safe online — from spotting scams to securing accounts.</p>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="showPage('curriculum')">View Workshops</button>
+      <button class="btn-outline" onclick="showPage('donate')">Support Our Mission</button>
+    </div>
+  </div>
+  <div class="announce">
+    <span>📢</span>
+    <div id="announceText">Next free workshop: <strong>Avoiding Online Scams</strong> — Saturday, July 12 at 10 AM via Zoom.</div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-num" id="statSeniors">340</div><div class="stat-label">Seniors Served</div></div>
+    <div class="stat-card"><div class="stat-num" id="statWorkshops">28</div><div class="stat-label">Workshops Held</div></div>
+    <div class="stat-card"><div class="stat-num" id="statHours">120+</div><div class="stat-label">Hours Taught</div></div>
+  </div>
+  <div class="section-title">About Us</div>
+  <div class="about-section">
+    <div class="about-img">🛡️</div>
+    <div class="about-text">
+      <h2>Our Mission</h2>
+      <p id="missionText">Cybersecurity For Tomorrow empowers seniors to navigate the digital world safely and confidently. Through free, accessible workshops, we teach practical skills — from recognizing phishing emails to protecting personal accounts — so that no senior is left vulnerable online.</p>
+    </div>
+  </div>
+  <div class="section-title">Latest Workshops</div>
+  <div id="homeVideos" class="video-grid"></div>
+  <div class="section-title">Our Work in Action</div>
+  <div id="homeGallery" class="photo-grid"></div>
+  <div style="text-align:center;margin-bottom:36px">
+    <button class="btn-primary" onclick="showPage('gallery')">View Full Gallery →</button>
+  </div>
+</div>
+
+<!-- ===== WORKSHOPS ===== -->
+<div class="page" id="page-curriculum">
+  <div style="padding-top:28px">
+    <div class="section-title">Workshop Library</div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder='Search topics, e.g. "Gmail Security", "Scams", "Passwords"...' oninput="filterVideos()">
+    </div>
+    <div class="filter-pills">
+      <div class="pill active" onclick="setFilter('All',this)">All</div>
+      <div class="pill" onclick="setFilter('Password Safety',this)">Password Safety</div>
+      <div class="pill" onclick="setFilter('Scam Awareness',this)">Scam Awareness</div>
+      <div class="pill" onclick="setFilter('Email Security',this)">Email Security</div>
+      <div class="pill" onclick="setFilter('Social Media',this)">Social Media</div>
+      <div class="pill" onclick="setFilter('Device Basics',this)">Device Basics</div>
+    </div>
+    <div id="videoGrid" class="video-grid"></div>
+  </div>
+</div>
+
+<!-- ===== GALLERY ===== -->
+<div class="page" id="page-gallery">
+  <div style="padding-top:28px">
+    <div class="section-title">Our Work in Action</div>
+    <p style="color:var(--gray2);margin-bottom:22px;font-size:16px">Photos from our workshops, events, and community outreach — proof of our real-world impact.</p>
+    <div id="galleryGrid" class="photo-grid"></div>
+    <div class="contact-box" style="margin-top:8px">
+      <h3>Have questions about our work?</h3>
+      <p>We'd love to hear from you. Send us an email and we'll get back to you within 24 hours.</p>
+      <a id="galleryEmail" href="mailto:contact@cybersecurityfortomorrow.org" class="email-btn">📧 Email Us</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== TEAM ===== -->
+<div class="page" id="page-team">
+  <div style="padding-top:28px">
+    <div class="section-title">Our Chapters</div>
+    <p style="color:var(--gray2);margin-bottom:22px;font-size:16px">Click a chapter to see its officers.</p>
+    <div id="chapterGrid" class="chapter-grid"></div>
+    <div id="officersPanel" class="officers-panel">
+      <div class="officers-header">
+        <div style="font-size:30px" id="panelIcon"></div>
+        <h3 id="panelTitle"></h3>
+      </div>
+      <div id="officerGrid" class="officer-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== RESOURCES ===== -->
+<div class="page" id="page-resources">
+  <div style="padding-top:28px">
+    <div class="section-title">Downloadable Guides</div>
+    <div id="resourceList" class="resource-list"></div>
+    <div class="section-title">Have a Question?</div>
+    <div class="contact-box">
+      <h3>📧 Email Us Anytime</h3>
+      <p>If you have questions about cybersecurity, upcoming workshops, or need personal tech support — reach out directly. We're here to help.</p>
+      <a id="contactEmail" href="mailto:contact@cybersecurityfortomorrow.org" class="email-btn">Send Us an Email</a>
+      <p style="margin-top:18px;font-size:14px;color:var(--gray2)">We typically respond within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DONATE ===== -->
+<div class="page" id="page-donate">
+  <div style="padding-top:28px">
+    <div class="donate-hero">
+      <div style="font-size:52px;margin-bottom:14px">💙</div>
+      <h2 id="donateTitle">Help Protect Seniors Online</h2>
+      <p id="donateText" style="color:var(--gray2);max-width:520px;margin:10px auto 0">Your donation funds free workshops, printed guides, and one-on-one tech support for seniors in our community.</p>
+      <div class="donate-amounts">
+        <div class="donate-amt sel" onclick="selAmt(this)">$10</div>
+        <div class="donate-amt" onclick="selAmt(this)">$25</div>
+        <div class="donate-amt" onclick="selAmt(this)">$50</div>
+        <div class="donate-amt" onclick="selAmt(this)">$100</div>
+      </div>
+      <button class="btn-primary" style="font-size:18px;padding:15px 36px" onclick="alert('Replace this with your Stripe or PayPal link in the Admin → Content tab.')">Donate Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADMIN ===== -->
+<div class="page" id="page-admin">
+  <div id="adminLogin" class="admin-login">
+    <h2>🔒 Admin Login</h2>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="adminPwd" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')adminLogin()">
+    </div>
+    <button class="btn-submit" style="width:100%" onclick="adminLogin()">Sign In</button>
+    <p style="font-size:13px;color:var(--gray2);margin-top:14px;text-align:center">Default password: <code>ctm2024</code> — change this in the HTML file</p>
+  </div>
+  <div id="adminDash" style="display:none;padding-top:22px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap;gap:10px">
+      <h2 style="font-size:24px;font-weight:600;color:var(--navy)">Admin Dashboard</h2>
+      <button onclick="adminLogout()" style="background:none;border:1px solid #E5E7EB;padding:7px 14px;border-radius:7px;cursor:pointer;font-size:14px">Log out</button>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="switchTab('videos',this)">📹 Videos</button>
+      <button class="admin-tab" onclick="switchTab('photos',this)">📸 Photos</button>
+      <button class="admin-tab" onclick="switchTab('content',this)">✏️ Content</button>
+      <button class="admin-tab" onclick="switchTab('stats',this)">📊 Stats</button>
+      <button class="admin-tab" onclick="switchTab('chapters',this)">🗺️ Chapters</button>
+      <button class="admin-tab" onclick="switchTab('officers',this)">👤 Officers</button>
+      <button class="admin-tab" onclick="switchTab('resources2',this)">📄 Resources</button>
+    </div>
+
+    <!-- VIDEOS TAB -->
+    <div class="admin-panel active" id="tab-videos">
+      <div class="admin-form">
+        <h3>Add New Workshop Video</h3>
+        <div class="row2">
+          <div class="form-group"><label>Title</label><input type="text" id="vTitle" placeholder="e.g. Avoiding Email Scams"></div>
+          <div class="form-group"><label>Category</label>
+            <select id="vCat">
+              <option>Scam Awareness</option><option>Password Safety</option>
+              <option>Email Security</option><option>Social Media</option><option>Device Basics</option>
+            </select>
+          </div>
+        </div>
+        <div class="row2">
+          <div class="form-group"><label>YouTube / Vimeo URL</label><input type="url" id="vUrl" placeholder="https://youtube.com/watch?v=..."></div>
+          <div class="form-group"><label>Date</label><input type="date" id="vDate"></div>
+        </div>
+        <div class="form-group"><label>Description</label><input type="text" id="vDesc" placeholder="Short description for seniors..."></div>
+        <button class="btn-submit" onclick="addVideo()">Add Video to Gallery</button>
+        <div class="success-msg" id="vSuccess">✓ Video added to the public workshop gallery!</div>
+      </div>
+      <h4 style="font-size:15px;color:var(--navy);margin-bottom:12px">Current Videos (<span id="videoCount">0</span>)</h4>
+      <div class="admin-list" id="adminVideoList"></div>
+    </div>
+
+    <!-- PHOTOS TAB -->
+    <div class="admin-panel" id="tab-photos">
+      <div class="admin-form">
+        <h3>Upload Photos of Your Work</h3>
+        <p style="font-size:13px;color:var(--gray2);margin-bottom:16px">Photos appear in the public Gallery page and on the homepage. Upload real photos of workshops, events, or community outreach to show your impact.</p>
+        <div class="form-group"><label>Caption / Description</label><input type="text" id="pCaption" placeholder="e.g. Workshop at Bay Area Senior Center, June 2024"></div>
+        <div class="upload-area" onclick="document.getElementById('photoUpload').click()">
+          <span style="font-size:36px">📸</span><br><br>
+          <strong>Click to upload a photo</strong><br>
+          <span style="font-size:12px">JPG, PNG, WEBP supported</span>
+          <input type="file" id="photoUpload" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
+        </div>
+        <div class="success-msg" id="pSuccess">✓ Photo added to the public gallery!</div>
+      </div>
+      <h4 style="font-size:15px;color:var(--navy);margin-bottom:12px">Gallery Photos (<span id="photoCount">0</span>)</h4>
+      <div id="photoAdminGrid" class="photo-admin-grid"></div>
+    </div>
+
+    <!-- CONTENT TAB -->
+    <div class="admin-panel" id="tab-content">
+      <div class="admin-form">
+        <h3>Edit Site Content</h3>
+        <div class="form-group"><label>Hero Headline</label><input type="text" id="editHero" value="Protecting Seniors in the Digital World"></div>
+        <div class="form-group"><label>Hero Sub-headline</label><input type="text" id="editHeroSub" value="Free cybersecurity workshops helping seniors stay safe online — from spotting scams to securing accounts."></div>
+        <div class="form-group"><label>Announcement Banner Text</label><input type="text" id="editAnnounce" value="Next free workshop: Avoiding Online Scams — Saturday, July 12 at 10 AM via Zoom."></div>
+        <div class="form-group"><label>Mission Statement</label><textarea id="editMission">Cybersecurity For Tomorrow empowers seniors to navigate the digital world safely and confidently. Through free, accessible workshops, we teach practical skills — from recognizing phishing emails to protecting personal accounts — so that no senior is left vulnerable online.</textarea></div>
+        <div class="form-group"><label>Contact Email Address (used for all "Email Us" buttons)</label><input type="email" id="editEmail" value="contact@cybersecurityfortomorrow.org" placeholder="your@email.com"></div>
+        <div class="form-group"><label>Donate Page Title</label><input type="text" id="editDonateTitle" value="Help Protect Seniors Online"></div>
+        <div class="form-group"><label>Donate Page Description</label><input type="text" id="editDonateText" value="Your donation funds free workshops, printed guides, and one-on-one tech support for seniors in our community."></div>
+        <button class="btn-submit" onclick="saveContent()">Save All Changes to Site</button>
+        <div class="success-msg" id="contentSuccess">✓ All content updated across the site!</div>
+      </div>
+    </div>
+
+    <!-- STATS TAB -->
+    <div class="admin-panel" id="tab-stats">
+      <div class="admin-form">
+        <h3>Update Impact Statistics</h3>
+        <p style="font-size:13px;color:var(--gray2);margin-bottom:16px">These numbers show on the homepage stat cards.</p>
+        <div class="row2">
+          <div class="form-group"><label>Seniors Served</label><input type="number" id="editSeniors" value="340"></div>
+          <div class="form-group"><label>Workshops Held</label><input type="number" id="editWorkshops" value="28"></div>
+        </div>
+        <div class="form-group"><label>Hours Taught (can include "+" e.g. "120+")</label><input type="text" id="editHours" value="120+"></div>
+        <button class="btn-submit" onclick="saveStats()">Update Stats on Homepage</button>
+        <div class="success-msg" id="statsSuccess">✓ Stats updated on the homepage!</div>
+      </div>
+    </div>
+
+    <!-- CHAPTERS TAB -->
+    <div class="admin-panel" id="tab-chapters">
+      <div class="admin-form">
+        <h3>Add New Chapter</h3>
+        <div class="row2">
+          <div class="form-group"><label>Chapter Name</label><input type="text" id="chName" placeholder="e.g. Bay Area"></div>
+          <div class="form-group"><label>Location / Description</label><input type="text" id="chLocation" placeholder="e.g. San Francisco, CA"></div>
+        </div>
+        <div class="form-group">
+          <label>Choose Clipart Icon</label>
+          <div class="icon-picker" id="iconPicker"></div>
+          <input type="hidden" id="chIcon" value="🏙️">
+        </div>
+        <button class="btn-submit" onclick="addChapter()">Add Chapter</button>
+        <div class="success-msg" id="chSuccess">✓ Chapter added to the Team page!</div>
+      </div>
+      <h4 style="font-size:15px;color:var(--navy);margin-bottom:12px">Current Chapters</h4>
+      <div class="admin-list" id="adminChapterList"></div>
+    </div>
+
+    <!-- OFFICERS TAB -->
+    <div class="admin-panel" id="tab-officers">
+      <div class="admin-form">
+        <h3>Add Officer to a Chapter</h3>
+        <div class="row2">
+          <div class="form-group"><label>Chapter</label><select id="oChapter"></select></div>
+          <div class="form-group"><label>Full Name</label><input type="text" id="oName" placeholder="e.g. Jane Smith"></div>
+        </div>
+        <div class="row2">
+          <div class="form-group"><label>Role / Title</label><input type="text" id="oRole" placeholder="e.g. President"></div>
+          <div class="form-group"><label>Initials (for avatar)</label><input type="text" id="oInitials" placeholder="e.g. JS" maxlength="2"></div>
+        </div>
+        <div class="form-group"><label>Short Bio</label><textarea id="oBio" placeholder="2–3 sentences about this officer..."></textarea></div>
+        <button class="btn-submit" onclick="addOfficer()">Add Officer</button>
+        <div class="success-msg" id="officerSuccess">✓ Officer added to their chapter!</div>
+      </div>
+      <h4 style="font-size:15px;color:var(--navy);margin-bottom:12px">All Officers</h4>
+      <div class="admin-list" id="adminOfficerList"></div>
+    </div>
+
+    <!-- RESOURCES TAB -->
+    <div class="admin-panel" id="tab-resources2">
+      <div class="admin-form">
+        <h3>Add Resource / PDF Guide</h3>
+        <div class="form-group"><label>Title</label><input type="text" id="rTitle" placeholder="e.g. Password Safety Guide"></div>
+        <div class="form-group"><label>Description</label><input type="text" id="rDesc" placeholder="What seniors will learn from this guide..."></div>
+        <div class="form-group"><label>Download Link (PDF URL)</label><input type="url" id="rUrl" placeholder="https://drive.google.com/..."></div>
+        <button class="btn-submit" onclick="addResource()">Add Resource</button>
+        <div class="success-msg" id="resourceSuccess">✓ Resource added to the Resources page!</div>
+      </div>
+      <h4 style="font-size:15px;color:var(--navy);margin-bottom:12px">Current Resources</h4>
+      <div class="admin-list" id="adminResourceList"></div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>🛡️ Cybersecurity For Tomorrow</strong><br>
+  Empowering seniors to stay safe in the digital world.<br>
+  <span id="footerEmail">contact@cybersecurityfortomorrow.org</span>
+</footer>
+
+</div><!-- end .site -->
+
+<!-- LIGHTBOX -->
+<div class="photo-lightbox" id="lightbox" onclick="closeLightbox()">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-caption" id="lbCaption"></div>
+</div>
+
+<script>
+// ============================================================
+// DATA — edit these defaults or use the Admin panel
+// ============================================================
+var ADMIN_PASSWORD = 'ctm2024'; // <-- CHANGE THIS
+
+var currentFilter = 'All';
+var activeChapter = null;
+var nextChapterId = 5;
+
+var ICONS = ['🏙️','🌉','🌴','🏔️','🌊','🌾','🏛️','🎓','🏘️','🌆','🏫','⭐','🛡️','💻','📡','🔐','🗺️','🤝','🏥','🌎'];
+
+var photos = [
+  {src:'', caption:'Workshop at Bay Area Senior Center — March 2024', placeholder:true},
+  {src:'', caption:'Scam Awareness Session — Sacramento Chapter', placeholder:true},
+  {src:'', caption:'Password Safety Workshop — April 2024', placeholder:true},
+  {src:'', caption:'Community Outreach Event — May 2024', placeholder:true}
+];
+
+var videos = [
+  {title:'Recognizing Phishing Emails', cat:'Email Security', url:'#', date:'2024-03-15', desc:'Learn how scammers fake emails from banks and the IRS.'},
+  {title:'Creating Strong Passwords', cat:'Password Safety', url:'#', date:'2024-04-02', desc:'Simple tricks for passwords that are safe AND easy to remember.'},
+  {title:'Facebook Privacy Settings', cat:'Social Media', url:'#', date:'2024-04-20', desc:'Control who sees your posts and personal info on Facebook.'},
+  {title:'Spotting Tech Support Scams', cat:'Scam Awareness', url:'#', date:'2024-05-05', desc:'What to do if someone calls claiming your computer has a virus.'},
+  {title:'Setting Up Two-Factor Login', cat:'Password Safety', url:'#', date:'2024-05-18', desc:'An extra lock on your accounts that keeps hackers out.'},
+  {title:'Safe Online Shopping', cat:'Scam Awareness', url:'#', date:'2024-06-01', desc:'How to spot fake websites before entering your credit card.'}
+];
+
+var chapters = [
+  {id:1, name:'Bay Area', location:'San Francisco, CA', icon:'🌉'},
+  {id:2, name:'Sacramento', location:'Sacramento, CA', icon:'🏛️'},
+  {id:3, name:'Los Angeles', location:'Los Angeles, CA', icon:'🌴'},
+  {id:4, name:'San Diego', location:'San Diego, CA', icon:'🌊'}
+];
+
+var officers = [
+  {chapterId:1, name:'Dr. Patricia Lin', role:'President', bio:'20 years in cybersecurity education. Founded CFT to protect underserved seniors from digital fraud.', initials:'PL'},
+  {chapterId:1, name:'Marcus Johnson', role:'Vice President', bio:'Retired IT professional turned educator. Makes complex security topics simple and accessible.', initials:'MJ'},
+  {chapterId:1, name:'Sofia Reyes', role:'Outreach Director', bio:'Connects with senior centers across the Bay Area to bring free workshops to those who need them most.', initials:'SR'},
+  {chapterId:2, name:'James Park', role:'President', bio:'Former cybersecurity analyst dedicated to senior digital safety in Sacramento.', initials:'JP'},
+  {chapterId:2, name:'Linda Chen', role:'Secretary', bio:'Manages logistics and communications for the Sacramento chapter.', initials:'LC'},
+  {chapterId:3, name:'Carlos Rivera', role:'President', bio:'Tech educator bringing cybersecurity awareness to LA-area seniors.', initials:'CR'},
+  {chapterId:4, name:'Anika Patel', role:'President', bio:'Leads San Diego workshops focused on online scam prevention.', initials:'AP'}
+];
+
+var resources = [
+  {title:'Password Safety Guide', desc:'Step-by-step guide to creating and remembering strong passwords.', url:'#'},
+  {title:'Spotting Scam Emails', desc:'Visual checklist to identify phishing attempts in your inbox.', url:'#'},
+  {title:'Social Media Privacy Checklist', desc:'Review your Facebook, Instagram, and WhatsApp privacy settings.', url:'#'},
+  {title:'Safe Online Shopping Tips', desc:'How to verify websites and protect your payment information.', url:'#'}
+];
+
+// ============================================================
+// RENDER FUNCTIONS
+// ============================================================
+
+function renderGallery() {
+  var g = document.getElementById('galleryGrid');
+  if (g) g.innerHTML = photos.map(function(p,i){ return photoTile(p,i); }).join('');
+  var h = document.getElementById('homeGallery');
+  if (h) h.innerHTML = photos.slice(0,4).map(function(p,i){ return photoTile(p,i); }).join('');
+  document.getElementById('photoCount').textContent = photos.length;
+  var ag = document.getElementById('photoAdminGrid');
+  if (!ag) return;
+  ag.innerHTML = photos.map(function(p,i){
+    if (p.placeholder) return '<div class="photo-admin-placeholder"><span style="font-size:28px">📷</span><span>'+p.caption+'</span><button onclick="delPhoto('+i+')">Remove</button></div>';
+    return '<div class="photo-admin-tile"><img src="'+p.src+'" alt=""><button class="del-photo" onclick="delPhoto('+i+')">✕</button><div class="cap-label"><input value="'+p.caption.replace(/"/g,'&quot;')+'" onchange="photos['+i+'].caption=this.value;renderGallery()"></div></div>';
+  }).join('');
+}
+
+function photoTile(p, i) {
+  if (p.placeholder) {
+    return '<div class="photo-tile"><div class="photo-placeholder"><span>📷</span><span>'+p.caption+'</span></div></div>';
+  }
+  return '<div class="photo-tile" onclick="openLightbox('+i+')"><img src="'+p.src+'" alt="'+p.caption+'"><div class="photo-caption">'+p.caption+'</div></div>';
+}
+
+function handlePhotoUpload(e) {
+  var file = e.target.files[0];
+  if (!file) return;
+  var cap = document.getElementById('pCaption').value || file.name;
+  var reader = new FileReader();
+  reader.onload = function(ev) {
+    photos.push({src: ev.target.result, caption: cap, placeholder: false});
+    document.getElementById('pCaption').value = '';
+    e.target.value = '';
+    renderGallery();
+    show('pSuccess');
+  };
+  reader.readAsDataURL(file);
+}
+
+function delPhoto(i) { photos.splice(i,1); renderGallery(); }
+
+function openLightbox(i) {
+  var p = photos[i];
+  if (p.placeholder) return;
+  document.getElementById('lbImg').src = p.src;
+  document.getElementById('lbCaption').textContent = p.caption;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() { document.getElementById('lightbox').classList.remove('open'); }
+
+function videoCard(v) {
+  var link = v.url && v.url !== '#' ? 'onclick="window.open(\''+v.url+'\',\'_blank\')"' : '';
+  return '<div class="video-card"><div class="video-thumb" '+link+'><div class="cat-badge">'+v.cat+'</div><div class="play-icon">▶</div></div><div class="video-info"><h3>'+v.title+'</h3><div class="vdate">'+v.date+'</div><p>'+v.desc+'</p></div></div>';
+}
+
+function renderVideos(list) {
+  var g = document.getElementById('videoGrid');
+  if (g) g.innerHTML = list.length ? list.map(videoCard).join('') : '<p style="color:var(--gray2);padding:20px 0">No workshops found. Try a different search or filter.</p>';
+  var h = document.getElementById('homeVideos');
+  if (h) h.innerHTML = videos.slice(0,3).map(videoCard).join('');
+  document.getElementById('videoCount').textContent = videos.length;
+  var al = document.getElementById('adminVideoList');
+  if (al) al.innerHTML = videos.map(function(v,i){
+    return '<div class="admin-item"><div class="admin-item-info"><h4>'+v.title+'</h4><p>'+v.cat+' · '+v.date+'</p></div><button class="btn-del" onclick="delVideo('+i+')">Remove</button></div>';
+  }).join('');
+}
+
+function filterVideos() {
+  var q = document.getElementById('searchInput').value.toLowerCase();
+  renderVideos(videos.filter(function(v){
+    return (currentFilter==='All'||v.cat===currentFilter) && (v.title.toLowerCase().includes(q)||v.desc.toLowerCase().includes(q)||v.cat.toLowerCase().includes(q));
+  }));
+}
+
+function setFilter(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.pill').forEach(function(p){ p.classList.remove('active'); });
+  el.classList.add('active');
+  filterVideos();
+}
+
+function renderResources() {
+  var list = document.getElementById('resourceList');
+  if (list) list.innerHTML = resources.map(function(r){
+    return '<div class="resource-item" onclick="window.open(\''+r.url+'\',\'_blank\')"><div class="res-icon">📄</div><div><h4>'+r.title+'</h4><p>'+r.desc+'</p></div></div>';
+  }).join('');
+  var al = document.getElementById('adminResourceList');
+  if (al) al.innerHTML = resources.map(function(r,i){
+    return '<div class="admin-item"><div class="admin-item-info"><h4>'+r.title+'</h4><p>'+r.desc+'</p></div><button class="btn-del" onclick="delResource('+i+')">Remove</button></div>';
+  }).join('');
+}
+
+function renderChapters() {
+  var g = document.getElementById('chapterGrid');
+  if (!g) return;
+  g.innerHTML = chapters.map(function(c){
+    var cnt = officers.filter(function(o){ return o.chapterId===c.id; }).length;
+    return '<div class="chapter-card'+(activeChapter===c.id?' active':'')+'" onclick="selectChapter('+c.id+')" id="ch-'+c.id+'"><div class="chapter-icon">'+c.icon+'</div><div class="chapter-name">'+c.name+'</div><div class="chapter-count">'+cnt+' officer'+(cnt!==1?'s':'')+'</div></div>';
+  }).join('');
+  if (activeChapter !== null) showOfficers(activeChapter);
+}
+
+function selectChapter(id) {
+  activeChapter = id;
+  document.querySelectorAll('.chapter-card').forEach(function(c){ c.classList.remove('active'); });
+  var card = document.getElementById('ch-'+id);
+  if (card) card.classList.add('active');
+  showOfficers(id);
+}
+
+function showOfficers(id) {
+  var ch = chapters.find(function(c){ return c.id===id; });
+  if (!ch) return;
+  var offs = officers.filter(function(o){ return o.chapterId===id; });
+  document.getElementById('panelIcon').textContent = ch.icon;
+  document.getElementById('panelTitle').textContent = ch.name + ' Chapter Officers';
+  document.getElementById('officerGrid').innerHTML = offs.length
+    ? offs.map(function(o){ return '<div class="officer-card"><div class="officer-avatar">'+o.initials+'</div><h4>'+o.name+'</h4><div class="role">'+o.role+'</div><div class="bio">'+o.bio+'</div></div>'; }).join('')
+    : '<p style="color:var(--gray2);font-size:14px">No officers added yet. Use the Admin panel to add officers to this chapter.</p>';
+  document.getElementById('officersPanel').classList.add('visible');
+}
+
+function renderAdminChapters() {
+  var al = document.getElementById('adminChapterList');
+  if (al) al.innerHTML = chapters.map(function(c,i){
+    return '<div class="admin-item"><div class="admin-item-info"><h4>'+c.icon+' '+c.name+'</h4><p>'+c.location+'</p></div><button class="btn-del" onclick="delChapter('+i+')">Remove</button></div>';
+  }).join('');
+  var sel = document.getElementById('oChapter');
+  if (sel) sel.innerHTML = chapters.map(function(c){ return '<option value="'+c.id+'">'+c.icon+' '+c.name+'</option>'; }).join('');
+}
+
+function renderAdminOfficers() {
+  var al = document.getElementById('adminOfficerList');
+  if (!al) return;
+  al.innerHTML = officers.map(function(o,i){
+    var ch = chapters.find(function(c){ return c.id===o.chapterId; });
+    return '<div class="admin-item"><div class="admin-item-info"><h4>'+o.name+'</h4><p>'+(ch?ch.icon+' '+ch.name:'')+' · '+o.role+'</p></div><button class="btn-del" onclick="delOfficer('+i+')">Remove</button></div>';
+  }).join('');
+}
+
+// ============================================================
+// ADMIN ACTIONS
+// ============================================================
+
+function addVideo() {
+  var t = document.getElementById('vTitle').value.trim();
+  if (!t) { alert('Please enter a title.'); return; }
+  videos.push({title:t, cat:document.getElementById('vCat').value, url:document.getElementById('vUrl').value||'#', date:document.getElementById('vDate').value||new Date().toISOString().slice(0,10), desc:document.getElementById('vDesc').value});
+  document.getElementById('vTitle').value=''; document.getElementById('vUrl').value=''; document.getElementById('vDesc').value='';
+  renderVideos(videos); show('vSuccess');
+}
+function delVideo(i) { videos.splice(i,1); renderVideos(videos); }
+
+function addResource() {
+  var t = document.getElementById('rTitle').value.trim();
+  if (!t) { alert('Please enter a title.'); return; }
+  resources.push({title:t, desc:document.getElementById('rDesc').value, url:document.getElementById('rUrl').value||'#'});
+  document.getElementById('rTitle').value=''; document.getElementById('rDesc').value=''; document.getElementById('rUrl').value='';
+  renderResources(); show('resourceSuccess');
+}
+function delResource(i) { resources.splice(i,1); renderResources(); }
+
+function addChapter() {
+  var n = document.getElementById('chName').value.trim();
+  if (!n) { alert('Please enter a chapter name.'); return; }
+  chapters.push({id:nextChapterId++, name:n, location:document.getElementById('chLocation').value, icon:document.getElementById('chIcon').value});
+  document.getElementById('chName').value=''; document.getElementById('chLocation').value='';
+  renderAdminChapters(); renderChapters(); show('chSuccess');
+}
+function delChapter(i) {
+  var id = chapters[i].id;
+  chapters.splice(i,1);
+  officers = officers.filter(function(o){ return o.chapterId!==id; });
+  if (activeChapter===id) { activeChapter=null; document.getElementById('officersPanel').classList.remove('visible'); }
+  renderAdminChapters(); renderChapters(); renderAdminOfficers();
+}
+
+function addOfficer() {
+  var n = document.getElementById('oName').value.trim();
+  if (!n) { alert('Please enter a name.'); return; }
+  var chId = parseInt(document.getElementById('oChapter').value);
+  officers.push({chapterId:chId, name:n, role:document.getElementById('oRole').value, bio:document.getElementById('oBio').value, initials:document.getElementById('oInitials').value||n.substring(0,2).toUpperCase()});
+  document.getElementById('oName').value=''; document.getElementById('oRole').value=''; document.getElementById('oBio').value=''; document.getElementById('oInitials').value='';
+  renderAdminOfficers(); renderChapters();
+  if (activeChapter===chId) showOfficers(chId);
+  show('officerSuccess');
+}
+function delOfficer(i) { officers.splice(i,1); renderAdminOfficers(); renderChapters(); if (activeChapter!==null) showOfficers(activeChapter); }
+
+function saveContent() {
+  document.getElementById('heroHeadline').textContent = document.getElementById('editHero').value;
+  document.getElementById('heroSub').textContent = document.getElementById('editHeroSub').value;
+  document.getElementById('announceText').innerHTML = '📢 ' + document.getElementById('editAnnounce').value;
+  document.getElementById('missionText').textContent = document.getElementById('editMission').value;
+  document.getElementById('donateTitle').textContent = document.getElementById('editDonateTitle').value;
+  document.getElementById('donateText').textContent = document.getElementById('editDonateText').value;
+  var email = document.getElementById('editEmail').value;
+  document.getElementById('contactEmail').href = 'mailto:' + email;
+  document.getElementById('galleryEmail').href = 'mailto:' + email;
+  document.getElementById('footerEmail').textContent = email;
+  show('contentSuccess');
+}
+
+function saveStats() {
+  document.getElementById('statSeniors').textContent = document.getElementById('editSeniors').value;
+  document.getElementById('statWorkshops').textContent = document.getElementById('editWorkshops').value;
+  document.getElementById('statHours').textContent = document.getElementById('editHours').value;
+  show('statsSuccess');
+}
+
+function selAmt(el) {
+  document.querySelectorAll('.donate-amt').forEach(function(a){ a.classList.remove('sel'); });
+  el.classList.add('sel');
+}
+
+function buildIconPicker() {
+  var p = document.getElementById('iconPicker');
+  if (!p) return;
+  p.innerHTML = ICONS.map(function(ic){
+    return '<div class="icon-opt'+(ic==='🏙️'?' sel':'')+'" onclick="pickIcon(this,\''+ic+'\')" title="'+ic+'">'+ic+'</div>';
+  }).join('');
+}
+
+function pickIcon(el, ic) {
+  document.querySelectorAll('.icon-opt').forEach(function(e){ e.classList.remove('sel'); });
+  el.classList.add('sel');
+  document.getElementById('chIcon').value = ic;
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.nav-links button').forEach(function(b){ b.classList.remove('nav-active'); });
+  var nb = document.getElementById('nb-'+id);
+  if (nb) nb.classList.add('nav-active');
+  window.scrollTo(0,0);
+}
+
+function switchTab(id, el) {
+  document.querySelectorAll('.admin-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.getElementById('tab-'+id).classList.add('active');
+  document.querySelectorAll('.admin-tab').forEach(function(t){ t.classList.remove('active'); });
+  el.classList.add('active');
+}
+
+function adminLogin() {
+  if (document.getElementById('adminPwd').value === ADMIN_PASSWORD) {
+    document.getElementById('adminLogin').style.display = 'none';
+    document.getElementById('adminDash').style.display = 'block';
+    renderVideos(videos); renderResources(); renderAdminChapters(); renderAdminOfficers(); buildIconPicker(); renderGallery();
+  } else {
+    alert('Incorrect password. Try again.');
+  }
+}
+
+function adminLogout() {
+  document.getElementById('adminLogin').style.display = 'block';
+  document.getElementById('adminDash').style.display = 'none';
+  document.getElementById('adminPwd').value = '';
+}
+
+// ============================================================
+// ACCESSIBILITY
+// ============================================================
+
+var bigFont = false;
+function toggleFontSize() {
+  bigFont = !bigFont;
+  document.body.style.fontSize = bigFont ? '22px' : '18px';
+}
+
+var hcOn = false;
+function toggleContrast() {
+  hcOn = !hcOn;
+  if (hcOn) {
+    document.body.style.background = '#000';
+    document.body.style.color = '#fff';
+    document.documentElement.style.setProperty('--white','#111');
+    document.documentElement.style.setProperty('--gray3','#1a1a1a');
+    document.documentElement.style.setProperty('--blue-light','#001433');
+  } else {
+    document.body.style.background = '';
+    document.body.style.color = '';
+    document.documentElement.style.setProperty('--white','#fff');
+    document.documentElement.style.setProperty('--gray3','#F3F4F6');
+    document.documentElement.style.setProperty('--blue-light','#EFF6FF');
+  }
+}
+
+function show(id) {
+  var s = document.getElementById(id);
+  if (s) { s.style.display='block'; setTimeout(function(){ s.style.display='none'; }, 3000); }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+renderVideos(videos);
+renderResources();
+renderChapters();
+renderGallery();
+</script>
+</body>
+</html>
